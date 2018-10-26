@@ -255,3 +255,21 @@ componentDidMount() {
     this.setState({begin: "Sample Question"});
     //alert("i worked!");
   }
+
+renderOption(i) {
+    return this.Questions[i].answers.map((option, index) => (
+      <p>
+        <button
+          key = {index}
+          class = 'btn btn-block'
+          style={{ background: this.state.wrongButton }}
+          disabled={this.state.optionsButton}
+          id={index}
+          value={option}
+          onClick={this.displayAnswer.bind(this)}
+        >
+          {option}
+        </button>
+      </p>
+    ));
+  }
