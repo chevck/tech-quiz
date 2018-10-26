@@ -273,3 +273,8 @@ renderOption(i) {
       </p>
     ));
   }
+
+ render() {
+    return this.giveFeedback();
+  }
+}
