@@ -23,7 +23,8 @@ export class QuizQuestions extends React.Component {
       pauseTime: false,
       wrongOption: null,
       selectedId: null,
-      correctanswerId:null
+      correctanswerId:null,
+      begin: ""
     };
   }
 
@@ -92,6 +93,7 @@ Questions = [
 incrementCounter() {
     this.refs.btnnext.setAttribute("disabled", "disabled");
     this.refs.btnstart.setAttribute("disabled", "disabled");
+    this.setState({begin: ""});
     //this.refs.btnoptions.removeAttribute("disabled");
     this.setState({ optionsButton: "" });
     if (this.state.i < this.Questions.length - 1) {
