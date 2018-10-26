@@ -16,19 +16,19 @@ export class QuizQuestions extends React.Component {
       missedQuestions: [],
       finsihed: false,
       background: "",
-      optionsButton: "",
+      optionsButton: false,
       timer: null,
-      startButton: "",
+      startButton: true,
+      nextButton: true,
       counttwo: 0,
       pauseTime: false,
-      wrongOption: null,
+wrongOption: null,
       selectedId: null,
-      correctanswerId:null,
+      correctanswerId:null, 
       begin: ""
     };
   }
 
-  
   renderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a complete state
@@ -46,7 +46,11 @@ export class QuizQuestions extends React.Component {
     }
   };
 
-Questions = [
+  setButtonOptions() {
+    // this.setState({ optionsButton: true })
+  }
+  // console.log({seconds})
+  Questions = [
     {
       id: 0,
       question: "What does CSS stand for?",
@@ -89,11 +93,12 @@ Questions = [
     }
   ];
 
-
-incrementCounter() {
-    this.refs.btnnext.setAttribute("disabled", "disabled");
-    this.refs.btnstart.setAttribute("disabled", "disabled");
-    this.setState({begin: ""});
+  incrementCounter() {
+  	this.setState({begin: ""});
+  	this.setState({nextButton: true})
+  	this.setState({startButton: true})
+    //this.refs.btnnext.setAttribute("disabled", "disabled");
+    //this.refs.btnstart.setAttribute("disabled", "disabled");
     //this.refs.btnoptions.removeAttribute("disabled");
     this.setState({ optionsButton: "" });
     if (this.state.i < this.Questions.length - 1) {
@@ -110,8 +115,8 @@ incrementCounter() {
     }
   }
 
-
- restartQuiz = e => {
+  restartQuiz = e => {
+  	//this.setState({optionsButton: false})
     this.setState({
       i: 0,
       finished: false,
@@ -119,16 +124,22 @@ incrementCounter() {
       points: 0,
       counttwo: 0,
       missedQuestions: [],
-      timer: null
-    });  
-   
-   //alert("i want to go!");
+      timer: null,
+      begin: "Sample Question",
+      nextButton: true, 
+      startButton: true
+    });
+    
+    //alert("i want to go!");
     //this.setState({ i: 0});
+    
   };
 
-returnFeedback() {
+
+  	
+  returnFeedback() {
     return this.state.missedQuestions.map(k => {
-    
+      //alert(k);
       return (
         <div>
         <center>
@@ -140,9 +151,9 @@ returnFeedback() {
     });
   }
 
-giveFeedback() {
+  giveFeedback() {
     if (this.state.finished === true) {
-      alert("workin");
+     
       return (
       <div>
         <div class = 'col-md-8 normalize' style = {{marginTop: '10%'}}>
@@ -164,16 +175,17 @@ giveFeedback() {
         <div class = 'col-md-10 normalize'>
         <center><h2>TEST QUESTIONS </h2>
           {/* <p> {this.state.i} </p>*/}
+          <p><h3 style = {{color: 'blue'}}> {this.state.begin} </h3></p>
           <p> {this.Questions[this.state.i].question} </p>
           {this.renderOption(this.state.i)}
           <div class = 'col-md-6 normalize'>
-          <button class = 'col-md-6 btn btn-block normalize' style = {{width: '97%'}} ref="btnstart" onClick={this.incrementCounter.bind(this)}>
+          <button disabled = {this.state.startButton} class = 'col-md-6 btn btn-block normalize' style = {{width: '97%'}} ref="btnstart" onClick={this.incrementCounter.bind(this)}>
             Start
           </button>
           </div>
 
          <div class = 'col-md-6 normalize'>
-         <button class = 'btn btn-block normalize' style = {{width: '97%'}} ref="btnnext" onClick={this.incrementCounter.bind(this)}>
+         <button disabled = {this.state.nextButton} class = 'btn btn-block normalize' style = {{width: '97%'}} ref="btnnext" onClick={this.incrementCounter.bind(this)}>
             Next{" "}
           </button>
          </div>
@@ -197,43 +209,66 @@ giveFeedback() {
     //this.setState({ timer: null })
   }
 
-   renderCheck() {
+  renderCheck() {
     if (this.check === 0) {
       this.setState({ optionsButton: true });
     }
   }
 
- displayAnswer(e) {
-const answer = e.target.value;
+  displayAnswer(e) {
+    const answer = e.target.value;
     const selectedAnswerID = e.target.id;
-    alert("Selected Answer ID is " + selectedAnswerID);
+    //alert("Selected Answer ID is " + selectedAnswerID);
     const correctAnswerID = this.Questions[this.state.i].correctID;
-    alert("correct answer is " + correctAnswerID);
+    //alert("correct answer is " + correctAnswerID);
 
     this.setState({ selectedId: selectedAnswerID })
     this.setState({ correctanswerId: correctAnswerID })
-   
-   const correctanswer = this.Questions[this.state.i].correct;
+
+    
+
+
+
+     
+
+    //this.refs.selectedAnswerID.setAttribute("disabled", "disabled")
+
+    //answer.setAttribute("disabled", "disabled")
+    //alert(answer);
+    // this.refs.answer.setAttribute('')
+    //this.refs.btnnext.setAttribute("background", "yellow");
+    // const setLastWords = this.state.endcomment + this.Question[this.state.i].question;
+    //this.setState({ endcomment: setLastWords });
+
+    const correctanswer = this.Questions[this.state.i].correct;
     if (this.state.count < 1) {
-      this.refs.btnstart.removeAttribute("disabled");
-      this.refs.btnnext.setAttribute("disabled", "disabled");
+    	this.setState({startButton: false});
+    	this.setState({nextButton: true})
 
       const newcount = this.state.count + 1;
       this.setState({ count: newcount });
     } else {
-      this.refs.btnnext.removeAttribute("disabled");
+    	this.setState({nextButton: false})
+      //this.refs.btnnext.removeAttribute("disabled");
     }
-
+    //this.refs.btnoptions.setAttribute("disabled", "disabled");
     this.setState({ optionsButton: true });
-   
-   if (answer === correctanswer) {
-      alert("Right");
+    //const setLastWords = this.state.endcomment + answer;
+
+    //const tracker = {this.state.i: answer}
+
+    //setLastWords = this.state.endcomment + correctanswer;
+    //this.setState({ endcomment: setLastWords });
+
+    //alert(correctanswer);
+    if (answer === correctanswer) {
+      //alert("Right");
       const questionPoint = this.Questions[this.state.i].pointer;
       const newPoints = this.state.points + questionPoint;
       this.setState({ points: newPoints });
       this.setState({});
     } else {
-      alert("wrong");
+      //alert("wrong");
       //const missedQuestion = this.Questions[this.state.i].id;
       if (this.state.counttwo < 1) {
         const newCountTwo = this.state.counttwo + 1;
@@ -243,25 +278,22 @@ const answer = e.target.value;
         missed.push(this.Questions[this.state.i].id);
         this.setState(
           ({ missedQuestions: missed } = () =>
-            alert(this.state.missedQuestions))
+            console.log(this.state.missedQuestions))
         );
       }
     }
   }
-componentDidMount() {
-    //this.setState({startButton: "disabled"});
-    this.refs.btnstart.setAttribute("disabled", "disabled");
-    this.refs.btnnext.setAttribute("disabled", "disabled");
-    this.setState({begin: "Sample Question"});
-    //alert("i worked!");
+
+  componentDidMount() {
+  		this.restartQuiz();
   }
 
-renderOption(i) {
+  renderOption(i) {
     return this.Questions[i].answers.map((option, index) => (
       <p>
         <button
-          key = {index}
-          class = 'btn btn-block'
+        key = {index}
+        class = 'btn btn-block'
           style={{ background: this.state.wrongButton }}
           disabled={this.state.optionsButton}
           id={index}
@@ -274,7 +306,12 @@ renderOption(i) {
     ));
   }
 
- render() {
+  render() {
     return this.giveFeedback();
   }
 }
+
+//ReactDOM.render(
+  //<Countdown date={Date.now() + 25000} />,
+  //document.getElementById('time')
+//);
