@@ -87,3 +87,23 @@ Questions = [
       time: 20
     }
   ];
+
+
+incrementCounter() {
+    this.refs.btnnext.setAttribute("disabled", "disabled");
+    this.refs.btnstart.setAttribute("disabled", "disabled");
+    //this.refs.btnoptions.removeAttribute("disabled");
+    this.setState({ optionsButton: "" });
+    if (this.state.i < this.Questions.length - 1) {
+      const j = this.state.i + 1;
+      this.setState({ i: j });
+      //console.log(this.state.i);
+      this.setState({ timer: this.Questions[this.state.i + 1].time });
+      //console.log(this.state.timer);
+      //alert(this.state.i);
+    } else {
+      // return this.state
+      alert("Quiz is finished");
+      this.setState({ finished: true });
+    }
+  }
