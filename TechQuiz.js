@@ -194,3 +194,10 @@ giveFeedback() {
     }
     //this.setState({ timer: null })
   }
+
+   renderCheck() {
+    if (this.check === 0) {
+      this.setState({ optionsButton: true });
+    }
+  }
+
