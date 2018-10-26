@@ -21,28 +21,41 @@ export class QuizQuestions extends React.Component {
       startButton: true,
       nextButton: true,
       counttwo: 0,
+      colorButton: "",
       pauseTime: false,
-wrongOption: null,
+	  wrongOption: null,
       selectedId: null,
       correctanswerId:null, 
-      begin: ""
+      begin: "", 
+      timeCount: null, 
+      pointsPercentage: null, 
+      totalPoints: 120,
+      clickTimes: 0,
+      end: ""
     };
   }
 
-  renderer = ({ hours, minutes, seconds, completed }) => {
-    if (completed) {
+  renderer = ({ hours, minutes, seconds, completed}) => {
+    if (completed && this.state.i > 0) {
       // Render a complete state
-      //this.setState({ optionsButton: true })
-      const check = 0;
-      this.renderCheck();
+      		
 
-      return <Completionist />;
+  				this.setState({optionsButton: true})
+  				this.setState({nextButton: false})
+      //this.renderCheck();
+      //this.setState({optionsButton: true})
+      	//this.setState({optionsButton: true})
+      		//alert("")
+      	//this.setState({timeCount: 0})
+      return <Completionist/>	
+      		     
+      	
     } else {
       console.log("Seconds " + seconds);
-      this.setButtonOptions();
+      //this.setButtonOptions();
 
       // Render a countdown
-      return <span style ={{fontSize: '18px'}}><b>{seconds}</b></span>;
+      return <span style ={{fontSize: '100px'}}><b>{seconds}</b></span>;
     }
   };
 
@@ -63,7 +76,7 @@ wrongOption: null,
       correct: "Cascading Style Sheets",
       correctID: 2,
       pointer: 0,
-      time: 0
+      time: null
     },
 
     {
@@ -79,7 +92,7 @@ wrongOption: null,
       correct: "In the <head> section",
       correctID: 0,
       pointer: 5,
-      time: 10
+      time: 5
     },
 
     {
@@ -89,14 +102,64 @@ wrongOption: null,
       correct: "<style>",
       pointer: 4,
       correctID: 0,
-      time: 20
+      time: 4
+    },
+
+    {
+      id: 3,
+      question: "Which company developed JavaScript?",
+      answers: ['Netscape', 'Mozilla', 'Andela', 'Microsoft'],
+      correct: 'Netscape',
+      pointer: 12,
+      correctID: 0,
+      time: 7
+    },
+
+    {
+      id: 4,
+      question: "The expression ('2' + 2) evaluates to: ",
+      answers: ['22', '4', 'NaN', 'undefined'],
+      correct: '22',
+      pointer: 10,
+      correctID: 0,
+      time: 15
+    },
+
+    {
+      id: 5,
+      question: "Which loop construct loops at least once, before checking the loop condition?",
+      answers: ['for loop', 'switch', 'while loop', 'do-while loop'],
+      correct: 'do-while loop',
+      pointer: 29,
+      correctID: 3,
+      time: 10
     }
+
   ];
 
   incrementCounter() {
+  	this.setState({colorButton: ""})
+  	this.setState({correctanswerId: null})
+  	this.setState({selectedId: null})
+  	this.setState({clickTimes: (this.state.clickTimes) + 1})
+  	const TimesClicked = this.state.clickTimes
+
+  	//alert(this.state.clickTimes)
+  	if ((this.state.i >=1) && (TimesClicked<1)){
+  		alert(true)
+  	let notanswered = this.state.missedQuestions;
+        notanswered.push(this.Questions[this.state.i].id);
+        this.setState(
+          ({ missedQuestions: notanswered } = () =>
+            console.log(this.state.missedQuestions))
+        );
+    }
+  	//alert(this.state.i)
+  	//this.setState({missedQuestions: this.state.i})
   	this.setState({begin: ""});
   	this.setState({nextButton: true})
   	this.setState({startButton: true})
+  	this.setState({end: "Points: "+ this.state.points})
     //this.refs.btnnext.setAttribute("disabled", "disabled");
     //this.refs.btnstart.setAttribute("disabled", "disabled");
     //this.refs.btnoptions.removeAttribute("disabled");
@@ -113,6 +176,7 @@ wrongOption: null,
       alert("Quiz is finished");
       this.setState({ finished: true });
     }
+    this.setState({clickTimes: 0})
   }
 
   restartQuiz = e => {
@@ -125,7 +189,9 @@ wrongOption: null,
       counttwo: 0,
       missedQuestions: [],
       timer: null,
-      begin: "Sample Question",
+      colorButton: "",
+      begin: "Sample Question:",
+      end: "This is a sample question, there is no point awarded",
       nextButton: true, 
       startButton: true
     });
@@ -153,12 +219,15 @@ wrongOption: null,
 
   giveFeedback() {
     if (this.state.finished === true) {
+    	const percent = (this.state.points / this.state.totalPoints) * 100
      
       return (
       <div>
         <div class = 'col-md-8 normalize' style = {{marginTop: '10%'}}>
         <center>
-         <span> You got {this.state.points} points </span>
+         <span> Your score is: {this.state.points} points <br/><br/> Which is {Math.round(percent)}% of points obtainable</span>
+         	<br/>
+         <h3> Questions you got wrong </h3>
           {this.returnFeedback()}
           <br/>
           <button class = 'btn btn-success' onClick={this.restartQuiz}> Back to Home </button>
@@ -190,14 +259,17 @@ wrongOption: null,
           </button>
          </div>
 
-          <p> Points: {this.state.points} </p>
+         <br/>
+         <div style = {{marginTop:'5%'}}>
+         <i><h4> {this.state.end} </h4></i> 
+         </div>
           </center>
           	</div>
           <div class = 'col-md-1 normalize'> </div> 
           	</div>
 
 
-          	<div class = 'col-md-4 normalize' style = {{marginTop: '12%'}}>
+          	<div class = 'col-md-4 normalize' style = {{marginTop: '8%'}}>
           <center><Countdown style = {{fontWeight: 'bold', fontSize: '20px'}}
             date={Date.now() + this.state.timer * 1000}
             renderer={this.renderer}
@@ -216,6 +288,8 @@ wrongOption: null,
   }
 
   displayAnswer(e) {
+  	
+  	this.setState({clickTimes: this.state.clickTimes + 1})
     const answer = e.target.value;
     const selectedAnswerID = e.target.id;
     //alert("Selected Answer ID is " + selectedAnswerID);
@@ -266,9 +340,11 @@ wrongOption: null,
       const questionPoint = this.Questions[this.state.i].pointer;
       const newPoints = this.state.points + questionPoint;
       this.setState({ points: newPoints });
+      this.setState({colorButton: "green"})
       this.setState({});
-    } else {
-      //alert("wrong");
+    } else  {
+     // alert("wrong");
+      this.setState({colorButton: "red"})
       //const missedQuestion = this.Questions[this.state.i].id;
       if (this.state.counttwo < 1) {
         const newCountTwo = this.state.counttwo + 1;
@@ -289,20 +365,14 @@ wrongOption: null,
   }
 
   renderOption(i) {
+  	const correctBtn = this.state.correctanswerId;
+  	const selectedBtn = this.state.selectedId
+
+  	//alert ("Correct: " + correctBtn);
+  	//alert ("Select:" + selectedBtn);
     return this.Questions[i].answers.map((option, index) => (
       <p>
-        <button
-        key = {index}
-        class = 'btn btn-block'
-          style={{ background: this.state.wrongButton }}
-          disabled={this.state.optionsButton}
-          id={index}
-          value={option}
-          onClick={this.displayAnswer.bind(this)}
-        >
-          {option}
-        </button>
-      </p>
+              </p>
     ));
   }
 
