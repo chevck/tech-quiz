@@ -5,3 +5,24 @@ import Countdown from 'react-countdown-now';
 import "./antdesign.css";
 
 const Completionist = () => <span><center><b>No Time!</b></center></span>;
+
+export class QuizQuestions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      i: 0,
+      count: 0,
+      points: 0,
+      missedQuestions: [],
+      finsihed: false,
+      background: "",
+      optionsButton: "",
+      timer: null,
+      startButton: "",
+      counttwo: 0,
+      pauseTime: false,
+      wrongOption: null,
+      selectedId: null,
+      correctanswerId:null
+    };
+  }
