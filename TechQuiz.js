@@ -221,3 +221,28 @@ const answer = e.target.value;
     } else {
       this.refs.btnnext.removeAttribute("disabled");
     }
+
+    this.setState({ optionsButton: true });
+   
+   if (answer === correctanswer) {
+      alert("Right");
+      const questionPoint = this.Questions[this.state.i].pointer;
+      const newPoints = this.state.points + questionPoint;
+      this.setState({ points: newPoints });
+      this.setState({});
+    } else {
+      alert("wrong");
+      //const missedQuestion = this.Questions[this.state.i].id;
+      if (this.state.counttwo < 1) {
+        const newCountTwo = this.state.counttwo + 1;
+        this.setState({ counttwo: newCountTwo });
+      } else {
+        let missed = this.state.missedQuestions;
+        missed.push(this.Questions[this.state.i].id);
+        this.setState(
+          ({ missedQuestions: missed } = () =>
+            alert(this.state.missedQuestions))
+        );
+      }
+    }
+  }
