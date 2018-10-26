@@ -246,3 +246,9 @@ const answer = e.target.value;
       }
     }
   }
+componentDidMount() {
+    //this.setState({startButton: "disabled"});
+    this.refs.btnstart.setAttribute("disabled", "disabled");
+    this.refs.btnnext.setAttribute("disabled", "disabled");
+    //alert("i worked!");
+  }
