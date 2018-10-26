@@ -201,3 +201,4 @@ giveFeedback() {
     }
   }
 
+ displayAnswer(e) {
