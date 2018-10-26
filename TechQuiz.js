@@ -210,3 +210,14 @@ const answer = e.target.value;
 
     this.setState({ selectedId: selectedAnswerID })
     this.setState({ correctanswerId: correctAnswerID })
+   
+   const correctanswer = this.Questions[this.state.i].correct;
+    if (this.state.count < 1) {
+      this.refs.btnstart.removeAttribute("disabled");
+      this.refs.btnnext.setAttribute("disabled", "disabled");
+
+      const newcount = this.state.count + 1;
+      this.setState({ count: newcount });
+    } else {
+      this.refs.btnnext.removeAttribute("disabled");
+    }
