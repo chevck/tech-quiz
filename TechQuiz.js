@@ -118,9 +118,9 @@ incrementCounter() {
       counttwo: 0,
       missedQuestions: [],
       timer: null
-    });
-
-    //alert("i want to go!");
+    });  
+   
+   //alert("i want to go!");
     //this.setState({ i: 0});
   };
 
