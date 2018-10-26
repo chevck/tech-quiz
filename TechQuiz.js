@@ -26,3 +26,21 @@ export class QuizQuestions extends React.Component {
       correctanswerId:null
     };
   }
+
+  
+  renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a complete state
+      //this.setState({ optionsButton: true })
+      const check = 0;
+      this.renderCheck();
+
+      return <Completionist />;
+    } else {
+      console.log("Seconds " + seconds);
+      this.setButtonOptions();
+
+      // Render a countdown
+      return <span style ={{fontSize: '18px'}}><b>{seconds}</b></span>;
+    }
+  };
