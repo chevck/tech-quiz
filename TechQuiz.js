@@ -250,5 +250,6 @@ componentDidMount() {
     //this.setState({startButton: "disabled"});
     this.refs.btnstart.setAttribute("disabled", "disabled");
     this.refs.btnnext.setAttribute("disabled", "disabled");
+    this.setState({begin: "Sample Question"});
     //alert("i worked!");
   }
