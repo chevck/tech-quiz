@@ -137,3 +137,60 @@ returnFeedback() {
       );
     });
   }
+
+giveFeedback() {
+    if (this.state.finished === true) {
+      alert("workin");
+      return (
+      <div>
+        <div class = 'col-md-8 normalize' style = {{marginTop: '10%'}}>
+        <center>
+         <span> You got {this.state.points} points </span>
+          {this.returnFeedback()}
+          <br/>
+          <button class = 'btn btn-success' onClick={this.restartQuiz}> Back to Home </button>
+          </center>
+        </div>
+        <div class = 'col-md-4 normalize'></div>
+       </div>
+      );
+    } else {
+      return (
+        <div style = {{marginTop: '10%'}}>
+        <div class = 'col-md-8 normalize'>
+        <div class = 'col-md-1 normalize'></div>
+        <div class = 'col-md-10 normalize'>
+        <center><h2>TEST QUESTIONS </h2>
+          {/* <p> {this.state.i} </p>*/}
+          <p> {this.Questions[this.state.i].question} </p>
+          {this.renderOption(this.state.i)}
+          <div class = 'col-md-6 normalize'>
+          <button class = 'col-md-6 btn btn-block normalize' style = {{width: '97%'}} ref="btnstart" onClick={this.incrementCounter.bind(this)}>
+            Start
+          </button>
+          </div>
+
+         <div class = 'col-md-6 normalize'>
+         <button class = 'btn btn-block normalize' style = {{width: '97%'}} ref="btnnext" onClick={this.incrementCounter.bind(this)}>
+            Next{" "}
+          </button>
+         </div>
+
+          <p> Points: {this.state.points} </p>
+          </center>
+          	</div>
+          <div class = 'col-md-1 normalize'> </div> 
+          	</div>
+
+
+          	<div class = 'col-md-4 normalize' style = {{marginTop: '12%'}}>
+          <center><Countdown style = {{fontWeight: 'bold', fontSize: '20px'}}
+            date={Date.now() + this.state.timer * 1000}
+            renderer={this.renderer}
+          /></center>
+          </div>
+        </div>
+      );
+    }
+    //this.setState({ timer: null })
+  }
