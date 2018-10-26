@@ -107,3 +107,19 @@ incrementCounter() {
       this.setState({ finished: true });
     }
   }
+
+
+ restartQuiz = e => {
+    this.setState({
+      i: 0,
+      finished: false,
+      count: 0,
+      points: 0,
+      counttwo: 0,
+      missedQuestions: [],
+      timer: null
+    });
+
+    //alert("i want to go!");
+    //this.setState({ i: 0});
+  };
