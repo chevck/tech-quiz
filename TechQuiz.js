@@ -123,3 +123,17 @@ incrementCounter() {
     //alert("i want to go!");
     //this.setState({ i: 0});
   };
+
+returnFeedback() {
+    return this.state.missedQuestions.map(k => {
+      //alert(k);
+      return (
+        <div>
+        <center>
+          <h4> {this.Questions[k].question} </h4>
+        Correct Answer: {this.Questions[k].correct} 
+        </center>
+        </div>
+      );
+    });
+  }
