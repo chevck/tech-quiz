@@ -202,3 +202,11 @@ giveFeedback() {
   }
 
  displayAnswer(e) {
+const answer = e.target.value;
+    const selectedAnswerID = e.target.id;
+    alert("Selected Answer ID is " + selectedAnswerID);
+    const correctAnswerID = this.Questions[this.state.i].correctID;
+    alert("correct answer is " + correctAnswerID);
+
+    this.setState({ selectedId: selectedAnswerID })
+    this.setState({ correctanswerId: correctAnswerID })
