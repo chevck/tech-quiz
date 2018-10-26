@@ -126,7 +126,7 @@ incrementCounter() {
 
 returnFeedback() {
     return this.state.missedQuestions.map(k => {
-      //alert(k);
+    
       return (
         <div>
         <center>
