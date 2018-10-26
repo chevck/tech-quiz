@@ -372,6 +372,25 @@ export class QuizQuestions extends React.Component {
   	//alert ("Select:" + selectedBtn);
     return this.Questions[i].answers.map((option, index) => (
       <p>
+	    <button
+        key = {index}
+        class = 'btn btn-block'
+          style={{
+          background:
+            selectedBtn && selectedBtn == index
+              ? index == correctBtn
+                ? "green"
+                : "red"
+              : selectedBtn && correctBtn == index && "green"
+        }}
+          disabled={this.state.optionsButton}
+          id={index}
+          value={option}
+          onClick={this.displayAnswer.bind(this)}
+        >
+          {option}
+        </button>
+
               </p>
     ));
   }
