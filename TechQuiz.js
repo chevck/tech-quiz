@@ -4,7 +4,6 @@ import Countdown from 'react-countdown-now';
 
 import "./quiz.css";
 
-const Completionist = () => <span><center><b>No Time!</b></center></span>;
 
 export class QuizQuestions extends React.Component {
   constructor(props) {
@@ -23,41 +22,20 @@ export class QuizQuestions extends React.Component {
       counttwo: 0,
       colorButton: "",
       pauseTime: false,
-	  wrongOption: null,
+      wrongOption: null,
       selectedId: null,
-      correctanswerId:null, 
-      begin: "", 
-      timeCount: null, 
-      pointsPercentage: null, 
+      correctanswerId: null,
+      begin: "",
+      timeCount: null,
+      pointsPercentage: null,
       totalPoints: 120,
       clickTimes: 0,
-      end: ""
+      end: "",
+      timerState: true,
+      timerCount: 0, 
+      timeWord: ""
     };
   }
-
-  renderer = ({ hours, minutes, seconds, completed}) => {
-    if (completed && this.state.i > 0) {
-      // Render a complete state
-      		
-
-  				this.setState({optionsButton: true})
-  				this.setState({nextButton: false})
-      //this.renderCheck();
-      //this.setState({optionsButton: true})
-      	//this.setState({optionsButton: true})
-      		//alert("")
-      	//this.setState({timeCount: 0})
-      return <Completionist/>	
-      		     
-      	
-    } else {
-      console.log("Seconds " + seconds);
-      //this.setButtonOptions();
-
-      // Render a countdown
-      return <span style ={{fontSize: '100px'}}><b>{seconds}</b></span>;
-    }
-  };
 
   setButtonOptions() {
     // this.setState({ optionsButton: true })
@@ -108,8 +86,8 @@ export class QuizQuestions extends React.Component {
     {
       id: 3,
       question: "Which company developed JavaScript?",
-      answers: ['Netscape', 'Mozilla', 'Andela', 'Microsoft'],
-      correct: 'Netscape',
+      answers: ["Netscape", "Mozilla", "Andela", "Microsoft"],
+      correct: "Netscape",
       pointer: 12,
       correctID: 0,
       time: 7
@@ -118,8 +96,8 @@ export class QuizQuestions extends React.Component {
     {
       id: 4,
       question: "The expression ('2' + 2) evaluates to: ",
-      answers: ['22', '4', 'NaN', 'undefined'],
-      correct: '22',
+      answers: ["22", "4", "NaN", "undefined"],
+      correct: "22",
       pointer: 10,
       correctID: 0,
       time: 15
@@ -127,39 +105,66 @@ export class QuizQuestions extends React.Component {
 
     {
       id: 5,
-      question: "Which loop construct loops at least once, before checking the loop condition?",
-      answers: ['for loop', 'switch', 'while loop', 'do-while loop'],
-      correct: 'do-while loop',
+      question:
+        "Which loop construct loops at least once, before checking the loop condition?",
+      answers: ["for loop", "switch", "while loop", "do-while loop"],
+      correct: "do-while loop",
       pointer: 29,
       correctID: 3,
       time: 10
     }
-
   ];
 
   incrementCounter() {
-  	this.setState({colorButton: ""})
-  	this.setState({correctanswerId: null})
-  	this.setState({selectedId: null})
-  	this.setState({clickTimes: (this.state.clickTimes) + 1})
-  	const TimesClicked = this.state.clickTimes
-
-  	//alert(this.state.clickTimes)
-  	if ((this.state.i >=1) && (TimesClicked<1)){
-  		alert(true)
-  	let notanswered = this.state.missedQuestions;
-        notanswered.push(this.Questions[this.state.i].id);
-        this.setState(
-          ({ missedQuestions: notanswered } = () =>
-            console.log(this.state.missedQuestions))
-        );
+  	this.setState({timeWord: ""})
+    this.setState({ timerState: true });
+    this.setState({timerCount: 0})
+    if (this.state.i < this.Questions.length - 1) {
+      var counter = this.Questions[this.state.i + 1].time;
+      var self = this;
+      var newYearCountdown = setInterval(function() {
+        console.log(counter);
+        //alert(counter);
+        const buttonTimer = self.state.timerState;
+        if (buttonTimer === true) {
+          self.setState({ timerCount: counter });
+          counter--;
+          if (counter < 0) {
+            console.log("HAPPY NEW YEAR!!");
+            clearInterval(newYearCountdown);
+            self.setState({timeWord: 'You ran out of time!'})
+            self.setState({ optionsButton: true });
+            self.setState({ nextButton: false });
+          }
+          // return counter;
+        } else {
+          clearInterval(newYearCountdown);
+        }
+      }, 1000);
     }
-  	//alert(this.state.i)
-  	//this.setState({missedQuestions: this.state.i})
-  	this.setState({begin: ""});
-  	this.setState({nextButton: true})
-  	this.setState({startButton: true})
-  	this.setState({end: "Points: "+ this.state.points})
+
+    this.setState({ colorButton: "" });
+    this.setState({ correctanswerId: null });
+    this.setState({ selectedId: null });
+    this.setState({ clickTimes: this.state.clickTimes + 1 });
+    const TimesClicked = this.state.clickTimes;
+
+    //alert(this.state.clickTimes)
+    if (this.state.i >= 1 && TimesClicked < 1) {
+      //alert(true);
+      let notanswered = this.state.missedQuestions;
+      notanswered.push(this.Questions[this.state.i].id);
+      this.setState(
+        ({ missedQuestions: notanswered } = () =>
+          console.log(this.state.missedQuestions))
+      );
+    }
+    //alert(this.state.i)
+    //this.setState({missedQuestions: this.state.i})
+    this.setState({ begin: "" });
+    this.setState({ nextButton: true });
+    this.setState({ startButton: true });
+    this.setState({ end: "Points: " + this.state.points });
     //this.refs.btnnext.setAttribute("disabled", "disabled");
     //this.refs.btnstart.setAttribute("disabled", "disabled");
     //this.refs.btnoptions.removeAttribute("disabled");
@@ -176,11 +181,11 @@ export class QuizQuestions extends React.Component {
       alert("Quiz is finished");
       this.setState({ finished: true });
     }
-    this.setState({clickTimes: 0})
+    this.setState({ clickTimes: 0 });
   }
 
   restartQuiz = e => {
-  	//this.setState({optionsButton: false})
+    //this.setState({optionsButton: false})
     this.setState({
       i: 0,
       finished: false,
@@ -192,26 +197,24 @@ export class QuizQuestions extends React.Component {
       colorButton: "",
       begin: "Sample Question:",
       end: "This is a sample question, there is no point awarded",
-      nextButton: true, 
-      startButton: true
+      nextButton: true,
+      startButton: true,
+      timerCount: 0
     });
-    
+
     //alert("i want to go!");
     //this.setState({ i: 0});
-    
   };
 
-
-  	
   returnFeedback() {
     return this.state.missedQuestions.map(k => {
       //alert(k);
       return (
         <div>
-        <center>
-          <h4> {this.Questions[k].question} </h4>
-        Correct Answer: {this.Questions[k].correct} 
-        </center>
+          <center>
+            <h4> {this.Questions[k].question} </h4>
+            Correct Answer: {this.Questions[k].correct}
+          </center>
         </div>
       );
     });
@@ -219,61 +222,85 @@ export class QuizQuestions extends React.Component {
 
   giveFeedback() {
     if (this.state.finished === true) {
-    	const percent = (this.state.points / this.state.totalPoints) * 100
-     
+      const percent = (this.state.points / this.state.totalPoints) * 100;
+
       return (
-      <div>
-        <div class = 'col-md-8 normalize' style = {{marginTop: '10%'}}>
-        <center>
-         <span> Your score is: {this.state.points} points <br/><br/> Which is {Math.round(percent)}% of points obtainable</span>
-         	<br/>
-         <h3> Questions you got wrong </h3>
-          {this.returnFeedback()}
-          <br/>
-          <button class = 'btn btn-success' onClick={this.restartQuiz}> Back to Home </button>
-          </center>
+        <div>
+          <div class="col-md-8 normalize" style={{ marginTop: "10%" }}>
+            <center>
+              <span>
+                {" "}
+                Your score is: {this.state.points} points <br />
+                <br /> Which is {Math.round(percent)}% of points obtainable
+              </span>
+              <br />
+              <h3> Questions you got wrong </h3>
+              {this.returnFeedback()}
+              <br />
+              <button class="btn btn-success" onClick={this.restartQuiz}>
+                {" "}
+                Back to Home{" "}
+              </button>
+            </center>
+          </div>
+          <div class="col-md-4 normalize" />
         </div>
-        <div class = 'col-md-4 normalize'></div>
-       </div>
       );
     } else {
       return (
-        <div style = {{marginTop: '10%'}}>
-        <div class = 'col-md-8 normalize'>
-        <div class = 'col-md-1 normalize'></div>
-        <div class = 'col-md-10 normalize'>
-        <center><h2>TEST QUESTIONS </h2>
-          {/* <p> {this.state.i} </p>*/}
-          <p><h3 style = {{color: 'blue'}}> {this.state.begin} </h3></p>
-          <p> {this.Questions[this.state.i].question} </p>
-          {this.renderOption(this.state.i)}
-          <div class = 'col-md-6 normalize'>
-          <button disabled = {this.state.startButton} class = 'col-md-6 btn btn-block normalize' style = {{width: '97%'}} ref="btnstart" onClick={this.incrementCounter.bind(this)}>
-            Start
-          </button>
+        <div style={{ marginTop: "10%" }}>
+          <div class="col-md-8 normalize">
+            <div class="col-md-1 normalize" />
+            <div class="col-md-10 normalize">
+              <center>
+                <h2>TEST QUESTIONS </h2>
+                {/* <p> {this.state.i} </p>*/}
+                <p>
+                  <h3 style={{ color: "blue" }}> {this.state.begin} </h3>
+                </p>
+                <p> {this.Questions[this.state.i].question} </p>
+                {this.renderOption(this.state.i)}
+                <div class="col-md-6 normalize">
+                  <button
+                    disabled={this.state.startButton}
+                    class="col-md-6 btn btn-block normalize"
+                    style={{ width: "97%" }}
+                    ref="btnstart"
+                    onClick={this.incrementCounter.bind(this)}
+                  >
+                    Start
+                  </button>
+                </div>
+
+                <div class="col-md-6 normalize">
+                  <button
+                    disabled={this.state.nextButton}
+                    class="btn btn-block normalize"
+                    style={{ width: "97%" }}
+                    ref="btnnext"
+                    onClick={this.incrementCounter.bind(this)}
+                  >
+                    Next{" "}
+                  </button>
+                </div>
+
+                <br />
+                <div style={{ marginTop: "5%" }}>
+                  <i>
+                    <h4> {this.state.end} </h4>
+                  </i>
+                </div>
+              </center>
+            </div>
+            <div class="col-md-1 normalize"> </div>
           </div>
 
-         <div class = 'col-md-6 normalize'>
-         <button disabled = {this.state.nextButton} class = 'btn btn-block normalize' style = {{width: '97%'}} ref="btnnext" onClick={this.incrementCounter.bind(this)}>
-            Next{" "}
-          </button>
-         </div>
-
-         <br/>
-         <div style = {{marginTop:'5%'}}>
-         <i><h4> {this.state.end} </h4></i> 
-         </div>
-          </center>
-          	</div>
-          <div class = 'col-md-1 normalize'> </div> 
-          	</div>
-
-
-          	<div class = 'col-md-4 normalize' style = {{marginTop: '8%'}}>
-          <center><Countdown style = {{fontWeight: 'bold', fontSize: '20px'}}
-            date={Date.now() + this.state.timer * 1000}
-            renderer={this.renderer}
-          /></center>
+          <div class="col-md-4 normalize" style={{ marginTop: "8%" }}>
+            <center>
+              {" "}
+              <b><span style = {{fontSize: '100px'}}>{this.state.timerCount}</span></b>
+              <h3> {this.state.timeWord} </h3>
+            </center>
           </div>
         </div>
       );
@@ -288,22 +315,16 @@ export class QuizQuestions extends React.Component {
   }
 
   displayAnswer(e) {
-  	
-  	this.setState({clickTimes: this.state.clickTimes + 1})
+    this.setState({ timerState: false });
+    this.setState({ clickTimes: this.state.clickTimes + 1 });
     const answer = e.target.value;
     const selectedAnswerID = e.target.id;
     //alert("Selected Answer ID is " + selectedAnswerID);
     const correctAnswerID = this.Questions[this.state.i].correctID;
     //alert("correct answer is " + correctAnswerID);
 
-    this.setState({ selectedId: selectedAnswerID })
-    this.setState({ correctanswerId: correctAnswerID })
-
-    
-
-
-
-     
+    this.setState({ selectedId: selectedAnswerID });
+    this.setState({ correctanswerId: correctAnswerID });
 
     //this.refs.selectedAnswerID.setAttribute("disabled", "disabled")
 
@@ -316,13 +337,13 @@ export class QuizQuestions extends React.Component {
 
     const correctanswer = this.Questions[this.state.i].correct;
     if (this.state.count < 1) {
-    	this.setState({startButton: false});
-    	this.setState({nextButton: true})
+      this.setState({ startButton: false });
+      this.setState({ nextButton: true });
 
       const newcount = this.state.count + 1;
       this.setState({ count: newcount });
     } else {
-    	this.setState({nextButton: false})
+      this.setState({ nextButton: false });
       //this.refs.btnnext.removeAttribute("disabled");
     }
     //this.refs.btnoptions.setAttribute("disabled", "disabled");
@@ -340,11 +361,11 @@ export class QuizQuestions extends React.Component {
       const questionPoint = this.Questions[this.state.i].pointer;
       const newPoints = this.state.points + questionPoint;
       this.setState({ points: newPoints });
-      this.setState({colorButton: "green"})
+      this.setState({ colorButton: "green" });
       this.setState({});
-    } else  {
-     // alert("wrong");
-      this.setState({colorButton: "red"})
+    } else {
+      // alert("wrong");
+      this.setState({ colorButton: "red" });
       //const missedQuestion = this.Questions[this.state.i].id;
       if (this.state.counttwo < 1) {
         const newCountTwo = this.state.counttwo + 1;
@@ -361,28 +382,28 @@ export class QuizQuestions extends React.Component {
   }
 
   componentDidMount() {
-  		this.restartQuiz();
+    this.restartQuiz();
   }
 
   renderOption(i) {
-  	const correctBtn = this.state.correctanswerId;
-  	const selectedBtn = this.state.selectedId
+    const correctBtn = this.state.correctanswerId;
+    const selectedBtn = this.state.selectedId;
 
-  	//alert ("Correct: " + correctBtn);
-  	//alert ("Select:" + selectedBtn);
+    //alert ("Correct: " + correctBtn);
+    //alert ("Select:" + selectedBtn);
     return this.Questions[i].answers.map((option, index) => (
       <p>
-	    <button
-        key = {index}
-        class = 'btn btn-block'
+        <button
+          key={index}
+          class="btn btn-block"
           style={{
-          background:
-            selectedBtn && selectedBtn == index
-              ? index == correctBtn
-                ? "green"
-                : "red"
-              : selectedBtn && correctBtn == index && "green"
-        }}
+            background:
+              selectedBtn && selectedBtn == index
+                ? index == correctBtn
+                  ? "green"
+                  : "red"
+                : selectedBtn && correctBtn == index && "green"
+          }}
           disabled={this.state.optionsButton}
           id={index}
           value={option}
@@ -390,8 +411,7 @@ export class QuizQuestions extends React.Component {
         >
           {option}
         </button>
-
-              </p>
+      </p>
     ));
   }
 
@@ -399,6 +419,7 @@ export class QuizQuestions extends React.Component {
     return this.giveFeedback();
   }
 }
+
 
 //ReactDOM.render(
   //<Countdown date={Date.now() + 25000} />,
