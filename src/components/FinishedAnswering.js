@@ -5,7 +5,7 @@ export class QuestionsFinished extends React.Component {
   render() {
     return (
       <div>
-        <div className="col-md-8 normalize" style={{ marginTop: "10%" }}>
+        <div className="col-md-8 normalize">
           <center>
             <span>
               {" "}
