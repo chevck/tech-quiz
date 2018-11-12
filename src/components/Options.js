@@ -1,5 +1,6 @@
 import React from "react";
 import { Questions } from "../questions.js";
+import '../btn.css'
 
 export class Options extends React.Component {
   render() {
