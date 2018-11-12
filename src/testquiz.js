@@ -6,6 +6,7 @@ import { QuestionsRemains } from "./components/notFinishedAnswering";
 import { QuestionsFinished } from "./components/FinishedAnswering";
 
 import { Evaluation } from "./components/AssessmentResult";
+import './btn.css'
 import './quiz.css'
 
 export class QuizQuestions extends React.Component {
