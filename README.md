@@ -5,4 +5,6 @@
 **cd quiz
 **npm start
 
-Application Runs 
+This application was developed while I was learning React. It was my first task to understand how state is handled and how to handle asynchronous requests. 
+
+I had so much fun on the project, please feel free to check it out and even recreate. 
